@@ -1,19 +1,33 @@
 const mongoose = require('mongoose')
+const { response } = require('../app')
+const validator = require('validator')
 
 const userSchema = new mongoose.Schema({
     fullName: {
         type: String, 
         required: [true, 'Your full name is required.'], 
-        trim: true
+        trim: true, 
+        validate: [validator.isAlpha, 'Your full name can only contain alphabets.']
     }, 
     contactNumber: {
         type: Number, 
         required: [true, 'You contact number is required.'], 
+        trim: true, 
+        validate: {
+            validator: function(value){
+                return value.length < 10
+            }, 
+            message: 'Please provide a valid phone number associated with South African service providers.'
+        }
+        
     }, 
     email: {
         type: String, 
         unique: true, 
-        trim: true
+        lowercase: true,  
+        trim: true, 
+        validate: [validator.isEmail, 'Please use a valid email address.']
+        
     }, 
     address: { //come back here as well
         type: String, 
@@ -32,7 +46,7 @@ const userSchema = new mongoose.Schema({
         }, 
         status:{
             enum: ['Accepted', 'Rejected', 'No response'], 
-            default: ['No response']
+            default: 'No response'
         }, 
         appointment:{
             type: mongoose.Types.ObjectId, 
