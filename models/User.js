@@ -52,7 +52,7 @@ const userSchema = new mongoose.Schema({
             type: mongoose.Types.ObjectId, 
             ref: 'Appointment'
         }, 
-        supportingDocs: {type: String}, //come back to this after research
+        supportingDocs: [String], //come back to this after research
         verified: {
             type: Boolean, 
             default: False
