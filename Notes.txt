@@ -1,1 +1,42 @@
-our notes here
+TODO:
+
+Create and initialize the express app and server.
+Determine all of the route URLs that will be hit and consumed for CRUD operations. 
+Create the routers for each resource (users, appointment, collector & sell room)
+Mount the routers on their respective URL routes
+
+Schema & models
+    Create all the Schema types and models required in the platform. 
+        1. Appointment
+        2. User
+        3. Collector
+        4. Sell Room
+        5. 
+        6. 
+
+
+
+Database
+    Create and connect the database through mongoose. 
+    Separate the function of connecting the database to a separate Server.js file. As to not mix API related code with code related to firing up the server and connection of database.
+
+
+
+
+
+Protection of the API
+    Preventing parameter pollution 
+    Preventing DoS attacks 
+    Preventing cross-site scripting
+
+
+
+API Error Handling
+
+
+
+Authentication and Authorization
+
+
+
+

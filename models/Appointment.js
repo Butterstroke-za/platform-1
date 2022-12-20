@@ -56,3 +56,4 @@ const appointmentSchema = new mongoose.Schema({
 const Appointment =  mongoose.Model('Appointment' , userSchema )
 
 module.exports = Appointment
+
