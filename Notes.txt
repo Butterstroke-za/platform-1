@@ -7,9 +7,9 @@ Mount the routers on their respective URL routes
 
 Schema & models
     Create all the Schema types and models required in the platform. 
-        1. Appointment
-        2. User
-        3. Collector
+        1. Appointment - done (pending testing)
+        2. User - done (pending testing)
+        3. Collector -
         4. Sell Room
         5. 
         6. 
