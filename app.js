@@ -1,20 +1,13 @@
 const express = require('express')
+const userRouter = require('./routes/userRoutes')
 
 const app = express()
 
+app.use(express.json())
 
-// TODO:
-// create app routes
 
-// create models (own folder)
-// create controllers (own folder)
-// create routes (own folder)
-// link to database 
-// app.use('/api/v1/users', userRouter)
-// app.use('/api/v1/appointment', appointmentRouter)
-// app.use('/api/v1/sellroom', selllroomRouter)
-// app.use('/api/v1/collector', collecterRouter)
-
+// APP ROUTES
+app.use('/api/v1/users/', userRouter)
 
 
 module.exports = app
