@@ -10,10 +10,15 @@ Schema & models
         1. Appointment - done (pending testing)
         2. User - done (pending testing)
         3. Collector -
-        4. Sell Room
+        4. Sell Room - 
         5. 
         6. 
 
+    The address field in users could be improved by defining different fields for the 
+        Street
+        City
+        Province
+        Postal code.
 
 
 Database
