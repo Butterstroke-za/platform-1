@@ -22,10 +22,12 @@ const collectorSchema = mongoose.Schema({
     }, 
     operatingArea: String, 
     qualifications: [String], 
-    appointments: { //come back to  this
-        type: mongoose.Types.ObjectId, 
-        ref: 'Appointment'
-    }
+    appointments: [
+        {
+            type: mongoose.Types.ObjectId, 
+            ref: 'Appointment'
+        }
+    ]
 
 })
 
