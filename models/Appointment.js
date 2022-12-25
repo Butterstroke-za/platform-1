@@ -9,7 +9,8 @@ const appointmentSchema = new mongoose.Schema({
     },
     User:{
         type: mongoose.Types.ObjectId, 
-        ref: 'User'
+        ref: 'User', 
+        require: [true, 'An appointment needs to be for a user.']
     },
     appointmentDetails:{
         address:{                   //do we even need this when the user is already referenced?
@@ -43,7 +44,7 @@ const appointmentSchema = new mongoose.Schema({
         }, 
 
         report:{
-            type: String
+            type: [String]
             //check whats needed
         },
 
@@ -58,7 +59,7 @@ const appointmentSchema = new mongoose.Schema({
     }
 })
 
-const Appointment =  mongoose.Model('Appointment' , userSchema )
+const Appointment =  mongoose.model('Appointment' , appointmentSchema )
 
 module.exports = Appointment
 
