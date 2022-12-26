@@ -29,22 +29,6 @@ const userSchema = new mongoose.Schema({
         type: Boolean, 
         default: 'false'
     }, 
-    offers: {                                //come back after some research
-        description: String, 
-        amount: Number, 
-        expires: {
-            type: Date, 
-            default: Math.floor(Date.now() + 7 * (3600 * 1000 * 24))
-        }, 
-        status:{
-            type: String,
-            enum: ['Accepted', 'Rejected', 'No response'], 
-            default: 'No response'
-        }, 
-        appointment:{
-            type: mongoose.Types.ObjectId, 
-            ref: 'Appointment'
-        }}, 
         supportingDocs: [String], //come back to this after research
         verified: {
             type: Boolean, 
@@ -56,3 +40,21 @@ const userSchema = new mongoose.Schema({
 const User =  mongoose.model('User' , userSchema )
 
 module.exports = User
+
+
+// offers: [{                                //come back after some research --- not needed, will populate data & offers potentially needs separate model file
+    //     description: String, 
+    //     amount: Number, 
+    //     expires: {
+    //         type: Date, 
+    //         default: Math.floor(Date.now() + 7 * (3600 * 1000 * 24))
+    //     }, 
+        // status:{
+        //     type: String,
+        //     enum: ['Accepted', 'Rejected', 'No response'], 
+        //     default: 'No response'
+        // }, 
+        // appointment:{
+        //     type: mongoose.Types.ObjectId, 
+        //     ref: 'Appointment'
+        // }}], 
