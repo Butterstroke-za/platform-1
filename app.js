@@ -1,22 +1,13 @@
 const express = require('express')
+const userRouter = require('./routes/userRoutes')
 
 const app = express()
 
-
-// TODO:
-// create app routes
-// create models (own folder)
-// create controllers (own folder)
-// create routes (own folder)
-// link to database 
+app.use(express.json())
 
 
-
-const port = 3000;
-app.listen(port, () =>{
-    console.log('connection succeeded....')
-})
-
+// APP ROUTES
+app.use('/api/v1/users/', userRouter)
 
 
 module.exports = app

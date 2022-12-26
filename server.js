@@ -5,7 +5,7 @@ const colors = require('colors')
 
 dotenv.config({path: './config.env'})
 
-const url = process.env.mongoUrl.replace('<PASSWORD>', process.env.mongoPassword).replace('<USERNAME>', 'koketso')
+const url = process.env.mongoUrl.replace('<PASSWORD>', process.env.mongoPassword).replace('<USERNAME>', process.env.mongoUsername)
 
 mongoose.connect(url, ()=>{
     console.log('Database connection established '.bold.bgBrightGreen)
