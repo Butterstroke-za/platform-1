@@ -20,6 +20,8 @@ Schema & models
         Province
         Postal code.
 
+    The address & operating area fields can further be improved by including geospatial data.
+
 
 Database
     Create and connect the database through mongoose. 
