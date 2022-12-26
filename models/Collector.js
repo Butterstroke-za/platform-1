@@ -6,29 +6,25 @@ const collectorSchema = mongoose.Schema({
     fullName: {
         type: String, 
         required: [true, 'Your full name is required.'], 
-        trim: true, 
-        validate: [validator.isAlpha, 'Your full name can only contain alphabets.']
+        trim: true
     }, 
     contactNumber: {
         type: Number, 
         required: [true, 'You contact number is required.'], 
-        trim: true, 
-        validate: {
-            validator: function(value){
-                return value.length < 10
-            }, 
-            message: 'Please provide a valid phone number associated with South African service providers.'
-        }
+        trim: true
     }, 
     operatingArea: String, 
     qualifications: [String], 
-    appointments: { //come back to  this
-        type: mongoose.Types.ObjectId, 
-        ref: 'Appointment'
-    }
+
+    // appointments: [              this is not needed. The appointment documents being referenced to the collector can be displayed through virtual populate
+    //     {
+    //         type: mongoose.Types.ObjectId, 
+    //         ref: 'Appointment'
+    //     }
+    // ]
 
 })
 
-const Collector = mongoose.Model('Collector', collectorSchema)
+const Collector = mongoose.model('Collector', collectorSchema)
 
 module.exports = Collector

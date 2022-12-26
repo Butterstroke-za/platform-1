@@ -2,16 +2,18 @@ const mongoose = require('mongoose')
 
 const appointmentSchema = new mongoose.Schema({
     sellRoom: {
-        type: String, 
-        required: [true, 'Offer Location is required'], 
+        type: mongoose.Types.ObjectId, 
+        ref: 'SellRoom',
+        required: [true, 'An appointment needs to reference a sell room.'], 
         trim: true
     },
     User:{
         type: mongoose.Types.ObjectId, 
-        ref: 'User'
+        ref: 'User', 
+        require: [true, 'An appointment needs to be for a user.']
     },
     appointmentDetails:{
-        address:{
+        address:{                   //do we even need this when the user is already referenced?
             type:String,
             required: [true, 'Address is required'], 
         },
@@ -20,7 +22,9 @@ const appointmentSchema = new mongoose.Schema({
             default:new Date().getHours() + ":" + new Date().getMinutes() + ":" + new Date().getSeconds()
         },
         collector:{
-            type:String,
+            type: mongoose.Types.ObjectId,
+            ref: 'Collector', 
+            required: [true, 'An appointment needs a collector assigned to it.']
         }
     },
     collectionInfo:{
@@ -40,6 +44,7 @@ const appointmentSchema = new mongoose.Schema({
         }, 
 
         report:{
+            type: [String]
             //check whats needed
         },
 
@@ -49,11 +54,12 @@ const appointmentSchema = new mongoose.Schema({
     },
     paymentMethod:{
         type:String,
-        required:[true,'Payment Method is required']
+        enum: ['Cash', 'Visa/Debit', 'Account Credit'],
+        default: 'Account Credit',
     }
 })
 
-const Appointment =  mongoose.Model('Appointment' , userSchema )
+const Appointment =  mongoose.model('Appointment' , appointmentSchema )
 
 module.exports = Appointment
 

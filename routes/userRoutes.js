@@ -4,7 +4,8 @@ const userController = require('../controllers/userController.js')
 
 const router = express.Router()
 
-router.route('/:id').get(userController.getUser)
+
+router.route('/:id').get(userController.getUser).delete(userController.deactivateUser)
 
 router.route('/').get(userController.getUsers).post(userController.createUser)
 
