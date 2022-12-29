@@ -13,6 +13,12 @@ const collectorSchema = mongoose.Schema({
         required: [true, 'You contact number is required.'], 
         trim: true
     }, 
+    appointments: [
+        {
+            type: mongoose.Types.ObjectId, 
+            ref: 'Appointment'
+        }
+    ],
     operatingArea: String, 
     qualifications: [String], 
 
