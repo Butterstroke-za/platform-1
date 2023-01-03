@@ -17,8 +17,11 @@ app.use('/api/v1/collectors/', collectorRouter)
 app.use('/api/v1/sellrooms', sellRoomRouter)
 
 //Global error handler
-app.all('*', (err, req, res , next)=>{
-    console.log('global error handler')
+app.all('*', (req, res , next)=>{
+    res.status(404).json({
+        status: 'fail', 
+        message: `${req.originalUrl} could not be found on this API. Please retry`
+    })
 })
 
 
