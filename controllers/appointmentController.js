@@ -1,8 +1,6 @@
 const Appointment = require("../models/Appointment")
 
 exports.createAppointment =  async(req, res, next)=>{
-    console.log('create new appointment here')
-
     try{
         const appointment = await  Appointment.create(req.body)
         res.status(200).json({
@@ -13,8 +11,8 @@ exports.createAppointment =  async(req, res, next)=>{
     }catch(err){
         res.status(400).json({
             status: 'error', 
-            message: 'something went wrong', 
-            error: err 
+            message: 'could not create new document', 
+            error: err.message
         })
     }
 }
@@ -22,7 +20,6 @@ exports.createAppointment =  async(req, res, next)=>{
 exports.getAppointments = async (req, res, next) =>{
     try{
         const appointments = await Appointment.find()
-
         res.status(200).json({
             status: 'success', 
             message: 'retrieved appointments successfully', 
@@ -40,7 +37,7 @@ exports.getAppointments = async (req, res, next) =>{
 
 exports.getAppointment = async (req, res ,next)=>{
     try{
-        const appointment = await Appointment.findById(req.params.id)
+        const appointment = await Appointment.findById(req.params.id).populate("appointmentDetails.collector").populate('sellRoom').populate('user')
 
         res.status(200).json({
             status: 'success', 
@@ -57,8 +54,6 @@ exports.getAppointment = async (req, res ,next)=>{
 }
 
 exports.updateAppointment = async (req, res, next) =>{
-    console.log('update already existing appointment here')
-
     try{
         const updatedAppointment = await Appointment.findByIdAndUpdate(req.params.id, req.body)
         
@@ -68,7 +63,11 @@ exports.updateAppointment = async (req, res, next) =>{
             data: updatedAppointment
         })
     }catch(err){
-        console.log(err)
+        res.status(404).json({
+            status: 'fail', 
+            message: 'could not update document', 
+            error: err.message
+        })
     }
 }
 
