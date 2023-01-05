@@ -10,16 +10,33 @@ exports.createCollector = async (req, res, next)=>{
             data: collector
         })
     }catch(err){
-        res.status(500).json({
+        res.status(400).json({
             status: 'error', 
             message: 'could not create collector document', 
             error: err
         })
     }
 }
+exports.getCollector = async (req, res, next)=>{
+    try{
+        const collector = await Collector.findById(req.params.id).populate('appointments').populate('sellRoom')
+        //loop through appointments array and populate indv.
 
-exports.getCollector = (req, res, next)=>{
+        // might need to loop through to populate sell room and user
+        
 
+        res.status(200).json({
+            status: 'success', 
+            message: 'retrieved collector document successfully', 
+            data: collector
+        })
+    }catch(err){
+        res.status(404).json({
+            status: 'fail', 
+            message: 'could not retrieve document', 
+            error: err.message
+        })
+    }
 }
 
 
