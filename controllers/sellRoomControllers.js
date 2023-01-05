@@ -1,8 +1,6 @@
 const SellRoom = require("../models/sellRoom")
 
 exports.createSellRoom =  async(req, res, next)=>{
-    console.log('create new sell Room here')
-
     try{
         const sellRoom  = await  SellRoom.create(req.body)
         res.status(200).json({
@@ -21,7 +19,7 @@ exports.createSellRoom =  async(req, res, next)=>{
 
 exports.getSellRooms = async (req, res, next) =>{
     try{
-        const sellRooms = await Appointment.find()
+        const sellRooms = await SellRoom.find()
 
         res.status(200).json({
             status: 'success', 
@@ -38,9 +36,9 @@ exports.getSellRooms = async (req, res, next) =>{
     }
 }
 
-exports.getsellRoom = async (req, res ,next)=>{
+exports.getSellRoom = async (req, res ,next)=>{
     try{
-        const sellRoom = await Appointment.findById(req.params.id)
+        const sellRoom = await SellRoom.findById(req.params.id)
 
         res.status(200).json({
             status: 'success', 

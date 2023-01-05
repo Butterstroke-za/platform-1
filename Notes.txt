@@ -1,29 +1,47 @@
 TODO:
 
-Create and initialize the express app and server.
-Determine all of the route URLs that will be hit and consumed for CRUD operations. 
-Create the routers for each resource (users, appointment, collector & sell room)
-Mount the routers on their respective URL routes
+[done]  Create and initialize the express app and server.
+[done]  Determine all of the route URLs that will be hit and consumed for CRUD operations. 
+[done]  Create the routers for each resource (users, appointment, collector & sell room)
+[done]  Mount the routers on their respective URL routes
 
 Schema & models
     Create all the Schema types and models required in the platform. 
         1. Appointment - done (pending testing)
         2. User - done (pending testing)
-        3. Collector -
-        4. Sell Room - 
-        5. 
+        3. Collector - done (pending tests)
+        4. Sell Room - done (pending tests)
+        5. Offers - implementation of this not catered for the first version
         6. 
 
     The address field in users could be improved by defining different fields for the 
-        Street
+        House/complex number
+        Street address
+        Suburb
         City
-        Province
-        Postal code.
+                //Province
+                //Postal code
+
+    Schema Refactor (using geospatial data and separation of fields)
+        address: {
+            houseNo.: Number, 
+            streetAddress: String, 
+            suburb: String, 
+            city: String,
+            coordinates: {
+                type: {
+                    type: String,
+                    default: 'Point',
+                    enum:['Point']
+                    }, 
+                coordinates: [Number]
+            }
+    },  
 
     The address & operating area fields can further be improved by including geospatial data.
 
 
-Database
+Database [done]
     Create and connect the database through mongoose. 
     Separate the function of connecting the database to a separate Server.js file. As to not mix API related code with code related to firing up the server and connection of database.
 
@@ -39,11 +57,20 @@ Protection of the API
 
 
 API Error Handling
+    Global error handling. What happens when users hit a route that does not exist?
 
 
 
 Authentication and Authorization
+    Separation of duties is a security principle that aims to prevent any single individual or group from having complete control over a process or system from start to finish. This is achieved by dividing responsibilities and roles for the intention of avoiding security breaches causing complete compromise, fraud and carrying out tasks without supervision and oversight from relevant system authorities.
+
+    It is because of this that we should look into protection of certain routes through requiring authorization such as tokens and cookies while ensuring the authentication process is also not compromisable. 
 
 
 
+Knowledge Transfer
+1. During parent referencing: When a child model/document references it's parent in the schema, the parent does not have to reference back to the child/children. 
 
+The parent model/document will still be able to display it's child references through mongoose's 'populate' method available through the models. 
+
+2. The parent can reference its children by having an array of mongoose object id types that reference the children. We can then utilize the same virtual populate method to display them when querying

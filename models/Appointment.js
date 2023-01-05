@@ -4,10 +4,9 @@ const appointmentSchema = new mongoose.Schema({
     sellRoom: {
         type: mongoose.Types.ObjectId, 
         ref: 'SellRoom',
-        required: [true, 'An appointment needs to reference a sell room.'], 
-        trim: true
+        required: [true, 'An appointment needs to reference a sell room.']
     },
-    User:{
+    user:{
         type: mongoose.Types.ObjectId, 
         ref: 'User', 
         require: [true, 'An appointment needs to be for a user.']
@@ -16,6 +15,10 @@ const appointmentSchema = new mongoose.Schema({
         address:{                   //do we even need this when the user is already referenced?
             type:String,
             required: [true, 'Address is required'], 
+        },
+        date: {
+            type: Date, 
+            required: [true, 'An appointment needs a date.']
         },
         time:{
             type: Date,
@@ -59,7 +62,8 @@ const appointmentSchema = new mongoose.Schema({
     }
 })
 
-const Appointment =  mongoose.model('Appointment' , appointmentSchema )
+
+const Appointment =  mongoose.model('Appointment', appointmentSchema)
 
 module.exports = Appointment
 

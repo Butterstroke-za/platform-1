@@ -46,6 +46,6 @@ const sellRoomSchema = new mongoose.Schema({
 
 })
 
-const SellRoom =  mongoose.Model('SellRoom' , userSchema )
+const SellRoom =  mongoose.model('SellRoom' , sellRoomSchema )
 
 module.exports = SellRoom

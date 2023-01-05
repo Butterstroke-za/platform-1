@@ -2,6 +2,12 @@ const mongoose = require('mongoose')
 const validator = require('validator')
 
 const userSchema = new mongoose.Schema({
+    idNumber:{
+        type: Number, 
+        required: [true, 'Your ID number is required.'], 
+        trim: true, 
+        unique: true
+    },
     fullName: {
         type: String, 
         required: [true, 'Your full name is required.'], 
@@ -33,8 +39,19 @@ const userSchema = new mongoose.Schema({
         verified: {
             type: Boolean, 
             default: 'false'
+        }, 
+        role:{
+            type: String, 
+            enum: ['user'],
+            default: 'user'
         }
     
+})
+
+userSchema.virtual('appointments', {
+    ref: 'Appointment', 
+    foreignField: 'user',
+    localField: 'data._id'
 })
 
 const User =  mongoose.model('User' , userSchema )
