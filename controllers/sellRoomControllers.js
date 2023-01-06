@@ -1,89 +1,33 @@
 const SellRoom = require("../models/sellRoom")
+const catchAsync = require('../utils/catchAsync')
+const response = require('../utils/response')
 
-exports.createSellRoom =  async(req, res, next)=>{
-    try{
+exports.createSellRoom = catchAsync(async(req, res, next)=>{
         const sellRoom  = await  SellRoom.create(req.body)
-        res.status(200).json({
-            status: 'success', 
-            message: 'sellRoom created successfully', 
-            data: sellRoom
-        })
-    }catch(err){
-        res.status(400).json({
-            status: 'error', 
-            message: 'something went wrong', 
-            error: err 
-        })
-    }
-}
+        if(!sellRoom) return next(new appError("Could not find a sell room", 404))
+       response(res, sellRoom, 200, "Sell room created successfully")
+})
 
-exports.getSellRooms = async (req, res, next) =>{
-    try{
+exports.getSellRooms = catchAsync(async (req, res, next) =>{
         const sellRooms = await SellRoom.find()
+        if(!sellRooms) return next(new appError('Could not find sell rooms', 404))
+        response(res, sellRooms, 200, "Sell rooms found successfully")
+})
 
-        res.status(200).json({
-            status: 'success', 
-            message: 'retrieved Sell Rooms successfully', 
-            results: sellRooms.length, 
-            data: sellRooms
-        })
-    }catch(err){
-        res.status(400).json({
-            status: 'error', 
-            message: 'could not get Sell Room documents',
-            error: err
-        })
-    }
-}
-
-exports.getSellRoom = async (req, res ,next)=>{
-    try{
+exports.getSellRoom = catchAsync(async (req, res ,next)=>{
         const sellRoom = await SellRoom.findById(req.params.id)
+        if(!sellRoom){ return next(new appError("Could not find any sell room", 404))}
+        response(res, sellRoom, 200, "Sell room retrieved successfully.")
+})
 
-        res.status(200).json({
-            status: 'success', 
-            message: 'Retrieved Sell Room successfully', 
-            data: sellRoom
-        })
-    }catch(err){
-        res.status(404).json({
-            status: 'error', 
-            message: 'Could not find Sell Room document', 
-            error: err
-        })
-    }
-}
+exports.updateSellRoom = catchAsync(async (req, res, next) =>{
+        const updatedSellRoom = await SellRoom.findByIdAndUpdate(req.params.id, req.body)
+        if(!updatedSellRoom){return next( new appError("Could not find a sell room to update", 404))}
+       response(res, updatedSellRoom, 204, "Updated sell room successfully.")
+})
 
-exports.updateSellRoom = async (req, res, next) =>{
-    console.log('update already existing sell Room here')
-
-    try{
-        const updatedsellRoom = await SellRoom.findByIdAndUpdate(req.params.id, req.body)
-        
-        res.status(200).json({
-            status:  'success', 
-            message:'sellRoom updated successfully', 
-            data: updatedsellRoom
-        })
-    }catch(err){
-        console.log(err)
-    }
-}
-
-exports.deleteSellRoom = async(req, res, next) =>{
-    try{
+exports.deleteSellRoom = catchAsync(async(req, res, next) =>{
         const sellRoom = await SellRoom.findByIdAndDelete(req.params.id)
-
-        res.status(204).json({
-            status: 'success', 
-            message: 'Sell Room deleted successfully', 
-            data: sellRoom
-        })
-    }catch(err){
-        res.status(404).json({
-            status: 'error', 
-            message:'Could not delete Sell Room', 
-            error: err
-        })
-    }
-}
+        if(!sellRoom){ return next(new appError("Could not find sell room to delete."))}
+        response(res, sellRoom, 204, "Sell room deleted successfully.")
+})
