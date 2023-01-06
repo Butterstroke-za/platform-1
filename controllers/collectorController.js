@@ -1,96 +1,47 @@
 const Collector = require("../models/Collector")
+const appError = require('../utils/appError')
+const response = require('../utils/response')
+const catchAsync = require("../utils/catchAsync")
 
-exports.createCollector = async (req, res, next)=>{
-    try{
-        const collector = await Collector.create(req.body)
-
-        res.status(200).json({
-            status: 'success', 
-            message: 'collector created successfully', 
-            data: collector
-        })
-    }catch(err){
-        res.status(400).json({
-            status: 'error', 
-            message: 'could not create collector document', 
-            error: err
-        })
+exports.createCollector = catchAsync(async (req, res, next) => {
+    const collectors = await Collector.find()
+    if (!collectors) {
+        return next(new appError("There was no Collector found", 404))
     }
-}
-exports.getCollector = async (req, res, next)=>{
-    try{
-        const collector = await Collector.findById(req.params.id).populate('appointments').populate('sellRoom')
-        //loop through appointments array and populate indv.
+    response(res, collectors, 200, "Collectors retrieved successfully")
 
-        // might need to loop through to populate sell room and user
-        
+})
 
-        res.status(200).json({
-            status: 'success', 
-            message: 'retrieved collector document successfully', 
-            data: collector
-        })
-    }catch(err){
-        res.status(404).json({
-            status: 'fail', 
-            message: 'could not retrieve document', 
-            error: err.message
-        })
-    }
-}
+exports.getCollector = catchAsync(async (req, res, next) => {
+
+    const collector = await Collector.findById(req.params.id).populate('appointments').populate('sellRoom')
+    //loop through appointments array and populate indv.
+    // might need to loop through to populate sell room and user
+
+    if (!collector) 
+    return next(new appError("There was no Collector found", 404))
+    response(res, collector, 200, "retrieved collector document successfully")
+
+})
 
 
-exports.getCollectors = async (req, res, next)=>{
-    try{
+exports.getCollectors = catchAsync(async (req, res, next) => {
         const collectors = await Collector.find()
-
-        res.status(200).json({
-            status: 'success', 
-            message: 'collectors retrieved successfully', 
-            results: collectors.length, 
-            data: collectors
+        if (!this.getCollectors) 
+        return next(new appError("could not get collector documents", 404))
+        response(res, collectors, 200, "collectors retrieved successfully")
         })
-    }catch(err){
-        res.status(404).json({
-            status: 'error', 
-            message: 'could not get collector documents', 
-            error: err
-        })
-    }
-}
 
-exports.updateCollector = async (req, res, next)=>{
-    try{
-        const collector = await Collector.findByIdAndUpdate(req.params.id, req.body, {new: true})
 
-        res.status(200).json({
-            status: 'success', 
-            message: 'collector document updated successfully', 
-            data: collector
-        })
-    }catch(err){
-        res.status(400).json({
-            status: 'error', 
-            message: 'could not get collector documents', 
-            error: err
-        })
-    }
-}
+exports.updateCollector = catchAsync(async (req, res, next) => {
+        const collector = await Collector.findByIdAndUpdate(req.params.id, req.body, {})
+        if (!this.updateCollectors) return next(new appError("could not get collector documents", 404))
+        response(res, collector, 200, "collector document updated successfully")
+        });
 
-exports.deleteCollector = async (req, res, next)=>{
-    try{
+
+exports.deleteCollector = catchAsync(async (req, res, next) => {
         const collector = await Collector.findByIdAndDelete(req.params.id)
-
-        res.status(204).json({
-            status: 'success', 
-            message: 'collector deleted successfully', 
-            data: collector
-        })
-    }catch(err){
-        res.status(404).json({
-            status: 'error', 
-            message: 'could not delete collector document', 
-            error: err
-        })
-    }
-}
+        if (!this.deleteCollectors) return next(new appError("could not delete collector document", 404))
+        response(res, collector, 200, "collector deleted successfully")
+        });

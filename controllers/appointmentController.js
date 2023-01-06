@@ -1,90 +1,34 @@
 const Appointment = require("../models/Appointment")
+const response = require("../utils/response")
+const catchAsync  = require("../utils/catchAsync")
 
-exports.createAppointment =  async(req, res, next)=>{
-    try{
-        const appointment = await  Appointment.create(req.body)
-        res.status(200).json({
-            status: 'success', 
-            message: 'appointment created successfully', 
-            data: appointment
-        })
-    }catch(err){
-        res.status(400).json({
-            status: 'error', 
-            message: 'could not create new document', 
-            error: err.message
-        })
-    }
-}
 
-exports.getAppointments = async (req, res, next) =>{
-    try{
-        const appointments = await Appointment.find()
-        res.status(200).json({
-            status: 'success', 
-            message: 'retrieved appointments successfully', 
-            results: appointments.length, 
-            data: appointments
-        })
-    }catch(err){
-        res.status(400).json({
-            status: 'error', 
-            message: 'could not get appointment documents',
-            error: err
-        })
-    }
-}
+exports.createAppointment = catchAsync(async (req, res, next) => {
+    const appointment = await Appointment.create(req.body);
+    response(res, appointment, 200, "appointment created successfully")
+});
 
-exports.getAppointment = async (req, res ,next)=>{
-    try{
-        const appointment = await Appointment.findById(req.params.id).populate("appointmentDetails.collector").populate('sellRoom').populate('user')
+exports.getAppointments = catchAsync(async(req, res, next) => {
+    const appointments = await Appointment.find()
+    if(!getAppointments){return next(new appError("could not get appointment documents", 404))}  
+    response(res,appointments, 200, "retrieved appointments successfully")
+    })
+exports.getAppointment = catchAsync(async (req, res, next) => {
+    const appointment = await Appointment.findById(req.params.id).populate('appointments');
+    if(!getAppointment) return next(new appError("Could not find an appointment document", 404))
 
-        res.status(200).json({
-            status: 'success', 
-            message: 'Retrieved appointment successfully', 
-            data: appointment
-        })
-    }catch(err){
-        res.status(404).json({
-            status: 'error', 
-            message: 'Could not find an appointment document', 
-            error: err
-        })
-    }
-}
+    response(res, appointment, 200, 'Retrieved appointment successfully')
+});
 
-exports.updateAppointment = async (req, res, next) =>{
-    try{
+exports.updateAppointment = catchAsync(async (req, res, next) =>{
         const updatedAppointment = await Appointment.findByIdAndUpdate(req.params.id, req.body)
-        
-        res.status(200).json({
-            status:  'success', 
-            message:'appointment updated successfully', 
-            data: updatedAppointment
-        })
-    }catch(err){
-        res.status(404).json({
-            status: 'fail', 
-            message: 'could not update document', 
-            error: err.message
-        })
-    }
-}
+        if(!(updatedAppointment)){return next(new appError("Could not find an appointment to update", 404))}
+        response(res, updatedAppointment, 202, "Updated appointment successfully.")
+})
 
-exports.deleteAppointment = async(req, res, next) =>{
-    try{
+exports.deleteAppointment = catchAsync(async(req, res, next) =>{
         const appointment = await Appointment.findByIdAndDelete(req.params.id)
-
-        res.status(204).json({
-            status: 'success', 
-            message: 'Appointment deleted successfully', 
-            data: appointment
-        })
-    }catch(err){
-        res.status(404).json({
-            status: 'error', 
-            message:'Could not delete appointment', 
-            error: err
-        })
-    }
-}
+        if(!appointment){ return next(new appError("Cold not find appointment to delete", 404))}
+        response(res, appointment, 204, "Deleted appointment successfully." )
+        r
+})

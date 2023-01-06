@@ -1,76 +1,30 @@
 const User = require("../models/User.js");
+const catchAsync = require('../utils/catchAsync')
+const appError = require('../utils/appError')
+const response = require('../utils/response')
 
-exports.getUsers = async (req, res, next) => {
-  try {
-    const users = await User.find();
+exports.getUsers = catchAsync(async(req, res, next) => {
+    const users = await User.find()
+    if(!users){return next(new appError("There was no users found", 404))}  
+    response(res,users, 200, "Users retrieved successfully")
+    })
 
-    res.status(200).json({
-      status: "success",
-      message: "retrieved all users",
-      results: users.length,
-      data: users,
-    });
-  } catch (err) {
-    res.status(400).json({
-      status: "error",
-      message: "something went wrong",
-      error: err,
-    });
-  }
-};
+exports.getUser = catchAsync(async (req, res, next) => {
+    const user = await User.findById(req.params.id).populate('appointments');
+    if(!user) return next(new appError("There was no user found", 404))
 
-exports.getUser = async (req, res, next) => {
-  try {
-    const user = await User.findById(req.params.id);
+    response(res, user, 200, 'User retrieved successfully')
+});
 
-    res.status(200).json({
-      status: "success",
-      message: "user retrieved successfully",
-      data: user,
-    });
-  } catch (err) {
-    res.status(400).json({
-      status: "error",
-      message: "something went wrong",
-      error: err,
-    });
-  }
-};
-
-exports.createUser = async (req, res, next) => {
-  try {
+exports.createUser = catchAsync(async (req, res, next) => {
     const user = await User.create(req.body);
+    response(res, user, 200, "User created successfully")
+});
 
-    res.status(200).json({
-      status: "success",
-      message: "user created successfully",
-      data: user,
-    });
-  } catch (err) {
-    res.status(400).json({
-      status: "error",
-      message: `Something went wrong`,
-      error: err,
-    });
-  }
-};
-
-
-exports.deactivateUser = async (req, res, next) => {
-    try {
+exports.deactivateUser = catchAsync(async (req, res, next) => {
       const user = await User.findByIdAndDelete(req.params.id);
-  
-      res.status(204).json({
-        status: "success",
-        message: "user deleted successfully",
-        data: user,
-      });
-    } catch (err) {
-      res.status(400).json({
-        status: "error",
-        message: `Something went wrong`,
-        error: err,
-      });
-    }
-  };
+      if(!user) return next(new appError("Could not find user to remove", 404))
+
+      response(res, user, 204, "User deleted successfully")
+  })
   
