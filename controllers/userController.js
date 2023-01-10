@@ -10,10 +10,13 @@ exports.getUsers = catchAsync(async(req, res, next) => {
     })
 
 exports.getUser = catchAsync(async (req, res, next) => {
+  if (req.params.id.match(/^[0-9a-fA-F]{24}$/)) {
     const user = await User.findById(req.params.id).populate('appointments');
     if(!user) return next(new appError("There was no user found", 404))
-
     response(res, user, 200, 'User retrieved successfully')
+    }else{
+      return next(new appError("Invalid user id. Cast to database failed", 404))
+    }
 });
 
 exports.createUser = catchAsync(async (req, res, next) => {
