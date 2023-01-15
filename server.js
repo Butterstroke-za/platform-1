@@ -1,9 +1,10 @@
-const mongoose = require('mongoose')
-const app = require('./app.js')
 const dotenv = require('dotenv')
-const colors = require('colors')
-
 dotenv.config({path: './config.env'})
+
+const mongoose = require('mongoose')
+const colors = require('colors')
+const app = require('./app.js')
+
 
 const url = process.env.mongoUrl.replace('<PASSWORD>', process.env.mongoPassword).replace('<USERNAME>', process.env.mongoUsername)
 
