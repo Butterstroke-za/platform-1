@@ -1,5 +1,8 @@
 const mongoose = require('mongoose')
 const validator = require('validator')
+const argon = require('argon2')
+const catchAsync = require('../utils/catchAsync')
+
 
 const userSchema = new mongoose.Schema({
     idNumber:{
@@ -8,6 +11,20 @@ const userSchema = new mongoose.Schema({
         trim: true, 
         unique: true
     },
+    password: {
+        type: String, 
+        required: [true, 'Your password is required.'],
+    }, 
+    confirmPassword: {
+        type: String, 
+        required:[true, 'Confirm Password is required.'],
+        validate: {
+            validator: function(value){
+                return value === this.password
+            }, 
+            message: "Password and Confirm Password do not match."
+        }
+    }, 
     fullName: {
         type: String, 
         required: [true, 'Your full name is required.'], 
@@ -44,8 +61,8 @@ const userSchema = new mongoose.Schema({
             type: String, 
             enum: ['user'],
             default: 'user'
-        }
-    
+        }, 
+        salt: String
 })
 
 userSchema.virtual('appointments', {
@@ -53,6 +70,30 @@ userSchema.virtual('appointments', {
     foreignField: 'user',
     localField: 'data._id'
 })
+
+userSchema.pre('save', function(next){
+    if(!this.password.isModified) return next()
+
+    try{
+        const salt = crypto.randomBytes(16).toString('hex')
+        this.password = argon.hash(this.password, salt, {
+             type: argon2.argon2id,
+            memoryCost: 2 ** 17,
+            timeCost: 3,
+            parallelism: 1
+        })
+
+        this.salt = salt
+        next()
+
+    }catch(err){
+        next(err)
+    }
+})
+
+userSchema.methods.checkPassword = function(hashedPass, userPassword, userSalt){
+    return argon.verify(hashedPass, userPassword, userSalt)
+}
 
 const User =  mongoose.model('User' , userSchema )
 
