@@ -9,7 +9,6 @@ exports.createCollector = catchAsync(async (req, res, next) => {
         return next(new appError("There was no Collector found", 404))
     }
     response(res, collectors, 200, "Collectors retrieved successfully")
-
 })
 
 exports.getCollector = catchAsync(async (req, res, next) => {
