@@ -56,7 +56,6 @@ const globalErrorHandler = (err, req, res, next)=>{
             if(error.name === 'TokenExpiredError') error = handleExpiredTokenError(error)
             if(error.name === 'JsonWebTokenError') error = handleJwtError(error)
             if(error.code === 1100) error = handleHandleDuplicateFields(error)
-            
 
         handleProductionError(err, req, res)
     }

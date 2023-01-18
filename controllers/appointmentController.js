@@ -10,7 +10,7 @@ exports.createAppointment = catchAsync(async (req, res, next) => {
 
 exports.getAppointments = catchAsync(async(req, res, next) => {
     const appointments = await Appointment.find()
-    if(!getAppointments){return next(new appError("could not get appointment documents", 404))}  
+    if(!appointments){return next(new appError("could not get appointment documents", 404))}  
     response(res,appointments, 200, "retrieved appointments successfully")
     })
 exports.getAppointment = catchAsync(async (req, res, next) => {
