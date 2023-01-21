@@ -1,21 +1,21 @@
 const mongoose = require('mongoose')
 
 const sellRoomSchema = new mongoose.Schema({
-    Description: {
+   description: {
         type: String, 
         required: [true, 'Please Insert SellRoom Description'], 
         trim: true
     },
-    TargetItem: {
+    targetItem: {
         type: String, 
         required: [true, 'Please Insert SellRoom Target Item'], 
         trim: true
     },
-    ExpiryDate: {
+    expiryDate: {
         type: Date, 
         required: [true, 'Please Insert SellRoom ExpiryDate'], 
     },
-    userMinRequirements: {
+    applicantRequirements: {
         type: String, 
         required: [true, 'Please Insert SellRoom User Minimum Requirements'], 
         trim: true
@@ -39,10 +39,10 @@ const sellRoomSchema = new mongoose.Schema({
         type: mongoose.Types.ObjectId, 
         ref: 'Appointment'
     },
-    appliedUsers:{ 
+    applicants:[{ 
         type: mongoose.Types.ObjectId, 
         ref: 'User'
-    }
+    }]
 
 })
 
