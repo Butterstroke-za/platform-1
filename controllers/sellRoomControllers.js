@@ -15,7 +15,7 @@ exports.getSellRooms = catchAsync(async (req, res, next) =>{
 })
 
 exports.getSellRoom = catchAsync(async (req, res ,next)=>{
-        const sellRoom = await SellRoom.findById(req.params.id)
+        const sellRoom = await SellRoom.findById(req.params.id).populate('applicants')
         if(!sellRoom){ return next(new appError("Could not find any sell room", 404))}
         response(res, sellRoom, 200, "Sell room retrieved successfully.")
 })
@@ -30,4 +30,15 @@ exports.deleteSellRoom = catchAsync(async(req, res, next) =>{
         const sellRoom = await SellRoom.findByIdAndDelete(req.params.id)
         if(!sellRoom){ return next(new appError("Could not find sell room to delete."))}
         response(res, sellRoom, 204, "Sell room deleted successfully.")
+})
+
+exports.sellRoomApplication = catchAsync(async (req, res , next) =>{
+        console.log('apply for sell room')
+        const sellRoom = await SellRoom.findOne({id: req.params.id})
+        sellRoom.applicants.push(req.user._id)
+        sellRoom.save({validateBeforeSave: false})
+        
+        // console.log(req.user)
+        response(res, sellRoom, 200, "Application for sell room succeeded.")
+        
 })
