@@ -9,7 +9,7 @@ const userSchema = new mongoose.Schema({
         type: Number, 
         required: [true, 'Your ID number is required.'], 
         trim: true, 
-        unique: true
+        unique: [true, 'The provided ID number already exists.']
     },
     password: {
         type: String, 
@@ -38,7 +38,7 @@ const userSchema = new mongoose.Schema({
     }, 
     email: {
         type: String, 
-        unique: true, 
+        unique: [true, 'The provided email address already exists.'], 
         lowercase: true,  
         trim: true, 
         validate: [validator.isEmail, 'Please use a valid email address.']
