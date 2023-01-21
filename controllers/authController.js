@@ -23,6 +23,8 @@ exports.login = async (req, res, next) => {
   const token = await jwt.sign({userId}, process.env.tokenSecret);
   req.user = user;
 
+  res.cookie('jwt', token, {expiresIn: '1min'})
+
   res.status(200).json({
     status: "success",
     message: "logged in successfully",
@@ -47,26 +49,25 @@ exports.protect = catchAsync(async (req, res, next) => {
   const decodedToken = await promisify(jwt.verify)(token, process.env.tokenSecret);
 
   const user = await User.findById(decodedToken.userId);
-  if (!user) {
-    return next(new appError("User belonging to this token does not exist anymore", 404));
-  }
+  if (!user) {return next(new appError("User belonging to this token does not exist anymore", 404));}
 
   req.user = user;
   next();
 });
 
 exports.signOut = catchAsync(async (req, res, next) => {
-  req.cookies("jwt", "Signed out");
+  res.cookie("jwt", "Signed out");
   res.status(200).json({
     status: "success",
     message: "User signed out",
   });
 });
 
-exports.signup = catchAsync(async (req, res, next) => {
+exports.signUp = catchAsync(async (req, res, next) => {
   const user = await User.create(req.body);
 
-  const token = jwt.sign(user._id, process.env.tokenSecret, { expiresIn: "10m" });
+  const userId = user._id
+  const token = jwt.sign({userId}, process.env.tokenSecret, { expiresIn: "10m" });
   res.cookie('jwt', token, {
     expires: new Date(Date.now() + 8 * 3600000), 
     // httpOnly: true 
