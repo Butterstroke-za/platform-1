@@ -35,15 +35,24 @@ const sellRoomSchema = new mongoose.Schema({
         required:[true, 'Please Insert SellRoom Location'], 
         trim: true
     },
-    appointments:{ // check this ,appointments is using sellroom as ref as well
+    appointments:[{ // check this ,appointments is using sellroom as ref as well
         type: mongoose.Types.ObjectId, 
         ref: 'Appointment'
-    },
+    }],
     applicants:[{ 
         type: mongoose.Types.ObjectId, 
         ref: 'User'
     }]
 
+}, {
+    toJSON: { virtuals: true }, 
+    toObject: { virtuals: true }
+})
+
+sellRoomSchema.virtual('application',{
+    ref: 'Application', 
+    foreignField: 'sellRoom', 
+    localField: '_id'
 })
 
 const SellRoom =  mongoose.model('SellRoom' , sellRoomSchema )
