@@ -6,9 +6,11 @@ const sellRoomRouter = require('./routes/sellRoomRoutes')
 const cookieParser = require('cookie-parser')
 const appError = require('./utils/appError')
 const globalErrorHandler = require('./controllers/globalErrorHandler')
+const compression = require('compression')
 
 const app = express()
 
+app.use(compression())
 app.use(express.json())
 app.use(cookieParser())
 
