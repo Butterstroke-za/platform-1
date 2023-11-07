@@ -1,7 +1,6 @@
 const mongoose = require('mongoose')
 const validator = require('validator')
 const argon = require('argon2')
-const catchAsync = require('../utils/catchAsync')
 
 
 const userSchema = new mongoose.Schema({
