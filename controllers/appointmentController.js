@@ -1,6 +1,6 @@
-const Appointment = require("../models/Appointment")
-const response = require("../utils/response")
-const catchAsync  = require("../utils/catchAsync")
+const Appointment = require("../models/Appointment.js")
+const response = require("../utils/response.js")
+const catchAsync  = require("../utils/catchAsync.js")
 
 
 exports.createAppointment = catchAsync(async (req, res, next) => {

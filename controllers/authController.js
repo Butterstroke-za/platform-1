@@ -1,7 +1,7 @@
-const User = require("../models/User");
-const appError = require("../utils/appError");
+const User = require("../models/User.js");
+const appError = require("../utils/appError.js");
 const jwt = require("jsonwebtoken");
-const catchAsync = require("../utils/catchAsync");
+const catchAsync = require("../utils/catchAsync.js");
 const dotenv = require("dotenv");
 const { promisify } = require("util");
 

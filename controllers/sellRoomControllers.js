@@ -1,6 +1,6 @@
-const SellRoom = require("../models/sellRoom")
-const catchAsync = require('../utils/catchAsync')
-const response = require('../utils/response')
+const SellRoom = require("../models/SellRoom.js")
+const catchAsync = require('../utils/catchAsync.js')
+const response = require('../utils/response.js')
 
 exports.createSellRoom = catchAsync(async(req, res, next)=>{
         const sellRoom  = await  SellRoom.create(req.body)

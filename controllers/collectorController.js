@@ -1,7 +1,7 @@
-const Collector = require("../models/Collector")
-const appError = require('../utils/appError')
-const response = require('../utils/response')
-const catchAsync = require("../utils/catchAsync")
+const Collector = require("../models/Collector.js")
+const appError = require('../utils/appError.js')
+const response = require('../utils/response.js')
+const catchAsync = require("../utils/catchAsync.js")
 
 exports.createCollector = catchAsync(async (req, res, next) => {
     const collectors = await Collector.find()
