@@ -1,4 +1,4 @@
-const appError = require("../utils/appError")
+const appError = require("../utils/appError.js")
 
 const handleCastError =(err)=>{
     const message = `${err.path} contains an invalid value: ${err.value}.`

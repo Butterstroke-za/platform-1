@@ -1,5 +1,5 @@
 const express  = require('express')
-const collectorController = require('../controllers/collectorController')
+const collectorController = require('../controllers/collectorController.js')
 
 const router = express.Router()
 
